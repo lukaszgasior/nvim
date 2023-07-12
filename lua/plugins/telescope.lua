@@ -6,13 +6,7 @@ return {
     lazy = true,
     dependencies = {
       'nvim-lua/plenary.nvim',
-      --'jvgrootveld/telescope-zoxide',
-      --'nvim-tree/nvim-web-devicons',
-      --{ 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' },
       'nvim-telescope/telescope-ui-select.nvim',
-      'telescope-dap.nvim',
-      'kkharji/sqlite.lua',
-      'nvim-telescope/telescope-frecency.nvim',
     },
     config = function()
       local telescope = require('telescope')
@@ -110,12 +104,6 @@ return {
           },
         },
         extensions = {
-          --fzf = {
-          --  fuzzy = true,                   -- false will only do exact matching
-          --  override_generic_sorter = true, -- override the generic sorter
-          --  override_file_sorter = true,    -- override the file sorter
-          --  case_mode = "smart_case",       -- or "ignore_case" or "respect_case"
-          --},
           ["ui-select"] = {
             require("telescope.themes").get_dropdown({
               previewer        = false,
@@ -131,25 +119,9 @@ return {
               },
             })
           },
-          frecency = {
-            default_workspace = 'CWD',
-            show_scores = true,
-            show_unindexed = true,
-            disable_devicons = false,
-            ignore_patterns = {
-              "*.git/*",
-              "*/tmp/*",
-              "*/lua-language-server/*",
-            },
-          }
         }
       }
-      --telescope.load_extension('fzf')
       telescope.load_extension('ui-select')
-      --telescope.load_extension('refactoring')
-      telescope.load_extension('dap')
-      --telescope.load_extension("zoxide")
-      telescope.load_extension("frecency")
     end
   },
 }
