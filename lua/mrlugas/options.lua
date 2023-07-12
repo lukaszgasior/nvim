@@ -13,8 +13,28 @@ local options = {
 	breakindent = true,
 	relativenumber = true,
 	number = true,
-
+  encoding = 'utf-8',
+  fileencoding = 'utf-8',
+  title = true,
+  autoindent = true,
+  hlsearch = true,
+  incsearch = true,
+  backup = false,
+  showcmd = true,
+  cmdheight = 1,
+  laststatus = 2,
+  expandtab = true,
+  scrolloff = 10,
+  shell = 'pwsh',
+  inccommand = 'split',
+  ignorecase = true,
+  smarttab = true,
+  breakindent = true,
+  wrap = false,
+  backspace = { 'start', 'eol', 'indent' }
 }
+
+vim.scriptencoding = 'utf-8'
 
 for k, v in pairs(options) do
 	vim.opt[k] = v
