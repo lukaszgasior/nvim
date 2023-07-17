@@ -4,9 +4,9 @@ end
 
 local diagnostics = {
   "diagnostics",
-  sources = { "nvim_diagnostic" },
-  sections = { "error", "warn" },
-  symbols = { error = " ", warn = " " },
+  sources = { 'nvim_lsp', 'nvim_diagnostic', 'nvim_workspace_diagnostic' },
+  -- sections = { "error", "warn" },
+  symbols = { error = ' ', warn = ' ', info = ' ', hint = ' ' },
   colored = false,
   update_in_insert = false,
   always_visible = true,
@@ -43,14 +43,20 @@ local location = {
   padding = 0,
 }
 
--- cool function for progress
-local progress = function()
-  local current_line = vim.fn.line(".")
-  local total_lines = vim.fn.line("$")
-  local chars = { "__", "▁▁", "▂▂", "▃▃", "▄▄", "▅▅", "▆▆", "▇▇", "██" }
-  local line_ratio = current_line / total_lines
-  local index = math.ceil(line_ratio * #chars)
-  return chars[index]
+-- LSP clients attached to buffer
+local clients_lsp = function()
+  local bufnr = vim.api.nvim_get_current_buf()
+
+  local clients = vim.lsp.buf_get_clients(bufnr)
+  if next(clients) == nil then
+    return '[No LSP]'
+  end
+
+  local c = {}
+  for _, client in pairs(clients) do
+    table.insert(c, client.name)
+  end
+  return '[\u{f085} ' .. table.concat(c, '|') .. ']'
 end
 
 local spaces = function()
@@ -64,7 +70,8 @@ return {
     require("lualine").setup({
       options = {
         icons_enabled = true,
-        theme = "auto",
+        -- theme = "auto",
+        theme = "onedark_vivid",
         component_separators = { left = "", right = "" },
         section_separators = { left = "", right = "" },
         disabled_filetypes = { "dashboard", "NvimTree", "Outline" },
@@ -73,11 +80,10 @@ return {
       sections = {
         lualine_a = { branch, diagnostics },
         lualine_b = { mode },
-        lualine_c = { 'filename' },
-        -- lualine_x = { "encoding", "fileformat", "filetype" },
-        lualine_x = { diff, spaces, "encoding", filetype },
-        lualine_y = { location },
-        lualine_z = { progress },
+        lualine_c = { 'filename', clients_lsp },
+        lualine_x = {},
+        lualine_y = { diff, spaces, "encoding", filetype },
+        lualine_z = { location },
       },
       inactive_sections = {
         lualine_a = {},
