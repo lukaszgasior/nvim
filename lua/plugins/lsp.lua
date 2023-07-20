@@ -178,12 +178,19 @@ return {
       })
 
       require('mason-lspconfig').setup({
-        ensure_installed = { 'lua_ls', 'rust_analyzer' },
+        ensure_installed = { 'lua_ls', 'rust_analyzer', 'terraformls', 'gopls' },
         handlers = {
           lsp.default_setup,
           lua_ls = function()
-            -- (Optional) Configure lua language server for neovim
             require('lspconfig').lua_ls.setup(lsp.nvim_lua_ls())
+
+            require 'lspconfig'.terraformls.setup {}
+            vim.api.nvim_create_autocmd({ "BufWritePre" }, {
+              pattern = { "*.tf", "*.tfvars" },
+              callback = function()
+                vim.lsp.buf.format()
+              end,
+            })
           end,
         }
       })
