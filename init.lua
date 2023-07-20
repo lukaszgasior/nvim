@@ -1,6 +1,6 @@
-require('mrlugas.options')
-require('mrlugas.keymaps')
-require('mrlugas.lazy')
+require('user.options')
+require('user.keymaps')
+require('user.lazy')
 
 vim.cmd("colorscheme onedark")
 
